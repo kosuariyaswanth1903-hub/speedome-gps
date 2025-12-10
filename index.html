@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SpeedoMe - Real Speed Detector</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🚀 SpeedoMe</h1>
+            <p class="subtitle">Real Speed Detector</p>
+        </header>
+
+        <!-- GPS Status -->
+        <div class="gps-status">
+            <div class="status-indicator">
+                <div id="gps-dot" class="gps-dot"></div>
+                <span id="gps-text" class="gps-text">GPS: Waiting</span>
+            </div>
+            <div class="accuracy" id="accuracy">Accuracy: -- m</div>
+        </div>
+
+        <!-- Speed Display -->
+        <div class="speedometer-container">
+            <div class="speed-display">
+                <span id="speed-value" class="speed-value">0.0</span>
+                <span id="speed-unit" class="speed-unit">km/h</span>
+            </div>
+            
+            <!-- Visual Speedometer -->
+            <div class="speedometer-circle">
+                <div class="needle-container">
+                    <div id="needle" class="needle"></div>
+                    <div class="center-dot"></div>
+                </div>
+            </div>
+            
+            <div class="speed-labels">
+                <span class="label">0</span>
+                <span class="label" id="mid-label">50</span>
+                <span class="label" id="max-label">100</span>
+            </div>
+        </div>
+
+        <!-- Real Activity Detection -->
+        <div class="detection-section">
+            <h3 class="section-title">DETECTED ACTIVITY</h3>
+            <div class="activity-display">
+                <div id="activity-icon" class="activity-icon">🚶</div>
+                <div class="activity-info">
+                    <div id="activity-name" class="activity-name">Not Moving</div>
+                    <div id="confidence" class="confidence">0% confidence</div>
+                </div>
+            </div>
+            <div class="sensor-status">
+                <div class="sensor">
+                    <i class="fas fa-satellite-dish"></i>
+                    <span id="gps-status">GPS: Off</span>
+                </div>
+                <div class="sensor">
+                    <i class="fas fa-running"></i>
+                    <span id="motion-status">Motion: Off</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics -->
+        <div class="stats-container">
+            <div class="stat-card">
+                <div id="distance-value" class="stat-value">0.00</div>
+                <div class="stat-label">DISTANCE (<span id="dist-unit">km</span>)</div>
+            </div>
+            <div class="stat-card">
+                <div id="max-speed-value" class="stat-value">0.0</div>
+                <div class="stat-label">MAX SPEED</div>
+            </div>
+            <div class="stat-card">
+                <div id="time-value" class="stat-value">00:00:00</div>
+                <div class="stat-label">TIME</div>
+            </div>
+            <div class="stat-card">
+                <div id="avg-speed-value" class="stat-value">0.0</div>
+                <div class="stat-label">AVG SPEED</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="unit-btn" class="unit-btn">
+                <i class="fas fa-exchange-alt"></i> Switch to mph
+            </button>
+            <button id="track-btn" class="track-btn start">
+                <i class="fas fa-play"></i> START REAL TRACKING
+            </button>
+            <button id="simulate-btn" class="simulate-btn">
+                <i class="fas fa-gamepad"></i> SIMULATION MODE
+            </button>
+        </div>
+
+        <!-- Mode Indicator -->
+        <div class="mode-indicator">
+            <div id="mode-dot" class="mode-dot offline"></div>
+            <span id="mode-text" class="mode-text">OFFLINE MODE</span>
+        </div>
+
+        <!-- Instructions -->
+        <div class="instructions">
+            <p><i class="fas fa-info-circle"></i> 
+                <span id="instruction-text">
+                    Click START REAL TRACKING to begin detecting your actual speed!
+                </span>
+            </p>
+        </div>
+
+        <!-- Debug Panel (Hidden by default) -->
+        <div class="debug-panel">
+            <button id="debug-toggle" class="debug-toggle">
+                <i class="fas fa-bug"></i> Debug
+            </button>
+            <div id="debug-content" class="debug-content">
+                <h4>Sensor Data:</h4>
+                <div>Last GPS Update: <span id="last-update">Never</span></div>
+                <div>Latitude: <span id="latitude">--</span></div>
+                <div>Longitude: <span id="longitude">--</span></div>
+                <div>Altitude: <span id="altitude">--</span> m</div>
+                <div>Motion Variance: <span id="motion-var">0.00</span></div>
+                <button id="reset-btn" class="reset-btn">Reset Data</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toast" class="toast"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
