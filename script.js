@@ -1,140 +1,54 @@
-// 🚀 SPEEDOME - Simple GPS Speedometer
-console.log('SpeedoMe GPS loaded!');
+const speedValue = document.getElementById("speedValue");
+const needle = document.getElementById("needle");
+const progress = document.getElementById("progress");
 
-// ========== STATE ==========
-const state = {
-    isTracking: false,
-    unit: 'kmh', // kmh, mph, or ms
-    speed: 0,
-    watchId: null
-};
+// GPS tracking
+if ("geolocation" in navigator) {
 
-// ========== DOM ELEMENTS ==========
-const elements = {
-    speedValue: document.getElementById('speed-value'),
-    speedUnit: document.getElementById('speed-unit'),
-    startBtn: document.getElementById('start-btn'),
-    unitBtns: document.querySelectorAll('.unit-btn')
-};
+    navigator.geolocation.watchPosition(
+        function (pos) {
+            let speed = pos.coords.speed; // meters/second
 
-// ========== INITIALIZATION ==========
-function init() {
-    console.log('Initializing SpeedoMe...');
-    
-    // Check GPS availability
-    if (!navigator.geolocation) {
-        showError('❌ GPS not supported by your browser. Try Chrome on mobile.');
-        return;
-    }
-    
-    // Start button event
-    elements.startBtn.addEventListener('click', toggleTracking);
-    
-    // Unit buttons events
-    elements.unitBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            // Remove active class from all buttons
-            elements.unitBtns.forEach(b => b.classList.remove('active'));
-            // Add active class to clicked button
-            btn.classList.add('active');
-            // Update unit
-            state.unit = btn.dataset.unit;
-            updateUnitDisplay();
-            convertSpeed();
-        });
-    });
-    
-    console.log('✅ SpeedoMe ready! Click START to begin.');
-}
+            if (speed === null) {
+                speedValue.textContent = "0";
+                return;
+            }
 
-// ========== GPS TRACKING ==========
-function toggleTracking() {
-    if (!state.isTracking) {
-        startTracking();
-    } else {
-        stopTracking();
-    }
-}
+            // Convert m/s → km/h
+            let kmh = Math.round(speed * 3.6);
 
-function startTracking() {
-    console.log('🟢 Starting GPS tracking...');
-    
-    // Check GPS permission
-    if (!navigator.geolocation) {
-        showError('GPS not available on this device');
-        return;
-    }
-    
-    // Update UI
-    elements.startBtn.textContent = '⏹️ STOP GPS SPEEDOMETER';
-    elements.startBtn.classList.add('stop');
-    state.isTracking = true;
-    
-    // Start watching GPS position
-    state.watchId = navigator.geolocation.watchPosition(
-        // Success callback
-        (position) => {
-            handlePositionUpdate(position);
+            if (kmh > 180) kmh = 180;
+
+            speedValue.textContent = kmh;
+
+            // Change arc color by speed
+            if (kmh < 60) {
+                progress.style.stroke = "#4caf50"; // green
+            } else if (kmh < 120) {
+                progress.style.stroke = "#ff9800"; // orange
+            } else {
+                progress.style.stroke = "#f44336"; // red
+            }
+
+            // Rotate needle (-90° to +90°)
+            let angle = -90 + (kmh / 180) * 180;
+            needle.style.transform = `rotate(${angle}deg)`;
+
+            // Arc progress
+            let dashOffset = 283 - (kmh / 180) * 283;
+            progress.style.strokeDashoffset = dashOffset;
         },
-        // Error callback
-        (error) => {
-            handleGpsError(error);
+
+        function (error) {
+            alert("Please allow GPS to use the speedometer.");
         },
-        // Options
+
         {
             enableHighAccuracy: true,
-            maximumAge: 0,
-            timeout: 10000
+            maximumAge: 500
         }
     );
-}
 
-function stopTracking() {
-    console.log('🔴 Stopping GPS tracking...');
-    
-    if (state.watchId) {
-        navigator.geolocation.clearWatch(state.watchId);
-        state.watchId = null;
-    }
-    
-    // Update UI
-    elements.startBtn.textContent = '🟢 START GPS SPEEDOMETER';
-    elements.startBtn.classList.remove('stop');
-    state.isTracking = false;
-    
-    // Reset speed display
-    state.speed = 0;
-    elements.speedValue.textContent = '0.0';
-    elements.speedValue.style.color = '#fff';
+} else {
+    alert("GPS not supported on this device.");
 }
-
-// ========== GPS DATA HANDLING ==========
-function handlePositionUpdate(position) {
-    let speedMps = 0; // Speed in meters per second
-    
-    // Get speed from GPS if available
-    if (position.coords.speed !== null && position.coords.speed > 0) {
-        speedMps = position.coords.speed;
-    }
-    
-    // Convert to selected unit
-    let displaySpeed = convertMpsToUnit(speedMps, state.unit);
-    
-    // Update state and display
-    state.speed = displaySpeed;
-    elements.speedValue.textContent = displaySpeed.toFixed(1);
-    
-    // Update color based on speed
-    updateSpeedColor(displaySpeed);
-    
-    // Log accuracy (optional)
-    if (position.coords.accuracy) {
-        console.log(`GPS Accuracy: ${position.coords.accuracy.toFixed(1)}m`);
-    }
-}
-
-function handleGpsError(error) {
-    console.error('GPS Error:', error);
-    
-    let message = '';
-    switch(error.code)
