@@ -1,1 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 SpeedoMe - Live GPS Speedometer</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚀</text></svg>">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1 class="title">🚀 SpeedoMe</h1>
+            <p class="subtitle">Live GPS Speedometer</p>
+        </header>
+
+        <!-- Privacy Note -->
+        <div class="privacy-note">
+            🔒 <strong>Your privacy is protected:</strong> GPS data is processed directly on your device and NEVER stored.
+        </div>
+
+        <!-- Speed Display -->
+        <div class="speed-display">
+            <span id="speed-value" class="speed-value">0.0</span>
+            <span id="speed-unit" class="speed-unit">km/h</span>
+        </div>
+
+        <!-- Unit Selector -->
+        <div class="unit-selector">
+            <button class="unit-btn active" data-unit="kmh">km/h</button>
+            <button class="unit-btn" data-unit="mph">mph</button>
+            <button class="unit-btn" data-unit="ms">m/s</button>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="start-btn" class="start-btn">
+                🟢 START GPS SPEEDOMETER
+            </button>
+        </div>
+
+        <!-- Help Section -->
+        <div class="help-section">
+            <h3>📍 Need Help?</h3>
+            <p>If speed shows 0:</p>
+            <ol>
+                <li>Click the <strong>🔒 lock icon</strong> in browser address bar</li>
+                <li>Set <strong>"Location"</strong> to <strong>"Allow"</strong></li>
+                <li>Refresh page and click START</li>
+            </ol>
+        </div>
+
+        <!-- How It Works -->
+        <div class="info-section">
+            <h3>📱 How to Use:</h3>
+            <p>1. Click <strong>START</strong> button</p>
+            <p>2. Allow <strong>location access</strong></p>
+            <p>3. <strong>Walk/Drive/Move</strong> to see real-time speed!</p>
+            <p>Works for: 🚶 Walking, 🏃 Running, 🚴 Cycling, 🚗 Driving</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
 
